@@ -1,3 +1,5 @@
 /BE/node_modules
 /BE/config
+/FE/node_modules
 package-lock.json
+.vscode
