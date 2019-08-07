@@ -1,6 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import Login from './page/register/LoginPage.vue'
+import SignUp from './page/register/SignupPage.vue'
+import EditProfile from './page/register/EditProfilePage.vue'
+import Home from'./page/calendar/HomePage.vue'
+import MyToday from'./page/calendar/MyTodayPage.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -10,27 +16,27 @@ export default new Router({
     {
       path: '/register/login',
       name: 'Login',
-      component: () => import('./page/register/LoginPage.vue')
+      component: Login
     },
     {
       path: '/register/signup',
       name: 'SignUp',
-      component: () => import('./page/register/SignupPage.vue')
+      component: SignUp
     },
     {
       path: '/register/editProfile',
       name: 'EditProfile',
-      component: () => import('./page/register/EditProfilePage.vue')
+      component: EditProfile
     },
     {
       path: '/calendar',
       name: 'Home',
-      component: () => import('./page/calendar/HomePage.vue')
+      component: Home
     },
     {
       path: '/calendar/today',
       name: 'MyToday',
-      component: () => import('./page/calendar/MyTodayPage.vue')
+      component: MyToday
     }
   ]
 })
