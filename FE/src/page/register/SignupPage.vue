@@ -1,9 +1,7 @@
 <template>
   <div id="signup">
+
     <h2>회원가입</h2>
-    <p v-show="valid.nickName">valid</p>
-    <p v-show="!valid.nickName">not valid</p>
-    <p>{{ userField }}</p>
     <table id="signupTable">
       <tr>
         <td class="signup_td_colname" >
@@ -116,8 +114,41 @@
 
     <div>
       <v-btn v-on:click="submit">Sign Up</v-btn>
-      <v-btn>Cancel</v-btn>
+      <v-btn v-on:click="clickCancel">Cancel</v-btn>
     </div>
+
+    <v-snackbar
+      v-model="alertVisible"
+      :timeout="alertTimeout"
+      :color="alertColor"
+      top
+    >
+      {{ alertMsg }}
+      <v-btn
+        v-if="alertType=='error'"
+        dark
+        text
+        @click="alertVisible = false"
+      >
+        Close
+      </v-btn>
+        <v-btn
+        v-if="alertType=='cancel'"
+        dark
+        text
+        @click="cancel"
+      >
+        YES
+      </v-btn>
+      <v-btn
+        v-if="alertType=='cancel'"
+        dark
+        text
+        @click="alertVisible = false"
+      >
+        NO
+      </v-btn>
+    </v-snackbar>
   </div>
 </template>
 
@@ -133,6 +164,8 @@ export default {
   },
   data() {
     return {
+      alertVisible: false, alertTimeout:0,
+      alertMsg:'', alertColor:'error', alertType: 'error',
       today: new Date(),
       valid: {
         'nickName':false,
@@ -181,15 +214,17 @@ export default {
 
       // 빈칸 체크
       if(this.userNickName==''||this.userBirthday==''||this.userGender==''||this.userField==''){
-        console.log(this.userNickName);
-        console.log(this.userBirthday);
-        console.log(this.userGender);
-        console.log(this.userField);
-        alert("필수 항목(*)을 모두 채워주세요.");
+        this.alertMsg = "필수 항목(*)을 모두 채워주세요.";
+        this.alertColor = "error"; this.alertTimeout = 5000;
+        this.alertType = "error";
+        this.alertVisible = true;
         return false;
       }
       else if(!checkVali){
-        alert("형식에 맞게 입력해주세요.");
+        this.alertMsg = "형식에 맞게 입력해주세요.";
+        this.alertColor = "error"; this.alertTimeout = 5000;
+        this.alertType = "error";
+        this.alertVisible = true; 
         return false;
       }
       else 
@@ -200,7 +235,19 @@ export default {
       if(checkVali){
         // 서버로 올리고 /register/login으로 redirects
         // then 써서 가입완료 alert 띄우기
+        alert("가입이 완료되었습니다.");
+        window.location.href = "http://localhost:8080/register/login"
       }
+    },
+    clickCancel(){
+        this.alertMsg = "회원가입을 취소할까요?";
+        this.alertColor = "warning"; this.alertTimeout = 0;
+        this.alertType = "cancel";
+        this.alertVisible = true;
+    },
+    cancel(){
+      this.alertVisible = false; 
+      window.location.href = "http://localhost:8080/register/login"
     }
   }
 }
