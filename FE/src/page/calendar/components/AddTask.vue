@@ -62,6 +62,21 @@
           <v-radio label="취소" value="취소" color="gray"></v-radio>
         </v-radio-group>
       </v-form>
+
+      <v-snackbar
+      v-model="alertVisible"
+      color="error"
+      top
+    >
+      {{ alertMsg }}
+      <v-btn
+        dark
+        text
+        @click="alertVisible = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
     
   </div>
 </template>
@@ -74,6 +89,7 @@ export default {
   data(){
     return {
       todayORtmr: 0,  // 0: today, 1: tmr
+      alertVisible: false, alertMsg:'',
       valid: true,
       title: '',  // 20자 이내
       detail: '', // 200자 이내
@@ -94,13 +110,16 @@ export default {
   methods:{
     add(){
       if(this.title==''){
-        alert("제목을 써주세요.");
+        this.alertMsg = "제목을 써주세요";
+        this.alertVisible = true;
       }
       else if(this.category==''){
-        alert("카테고리를 설정해주세요.");
+        this.alertMsg = "카테고리를 설정해주세요";
+        this.alertVisible = true;
       }
       else if(!this.valid){
-        alert("형식에 맞게 입력해주세요")
+        this.alertMsg = "형식에 맞게 입력해주세요";
+        this.alertVisible = true;
       }
       else {
         // 디비에 전송 후
@@ -109,9 +128,6 @@ export default {
         this.$emit('close');
       }
     },
-    cancel(){ //경고창X
-      // MyTodayPage(parent)의 addTaskDialog를 false로 변경
-    }
   }
 }
 </script>
