@@ -42,6 +42,7 @@
             lazy-validation
             v-model="valid.birthDay">
           <v-text-field
+              required
             v-model="userBirthday"
             :rules="birthDayRules"
             v-mask="mask"
@@ -84,6 +85,7 @@
             lazy-validation
             v-model="valid.endTime">
             <v-text-field
+              required
               v-model="userChangeDayTime"
               type="time"
               suffix="PST"
