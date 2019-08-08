@@ -1,5 +1,20 @@
 <template>
   <div>
+    <v-dialog
+      v-model="addTaskDialog"
+      persistent 
+      width="500"
+    >
+    <template v-slot:activator="{ on }">
+        <v-btn
+          dark
+          v-on="on"
+        >
+          추가
+        </v-btn>
+      </template>
+    <cAddTask @close="closeAddTask" />
+    </v-dialog>
     <table width="100%">
       <tr>
         <td rowspan="2" bgcolor="skyblue" height="500">
@@ -30,6 +45,16 @@ export default {
   name: 'mytoday',
   components: {
     vTaskList,vStopWatch,vDiary,cAddTask,cTaskDetail,cTimeStamp
+  },
+  data(){
+    return {
+      addTaskDialog:false,
+    }
+  },
+  methods:{
+    closeAddTask(){
+      this.addTaskDialog = false;
+    }
   }
 }
 </script>
