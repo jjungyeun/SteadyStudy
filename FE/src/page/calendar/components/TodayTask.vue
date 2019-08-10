@@ -8,9 +8,9 @@
   >
     <v-list-item three-line>
       <v-list-item-content>
-        <p class="todayTask-category">{{ category }}</p>
-        <v-list-item-title class="headline">{{ title }}</v-list-item-title>
-        <v-list-item-subtitle>{{ time }}</v-list-item-subtitle>
+        <p class="todayTask-category">{{ task.category }}</p>
+        <v-list-item-title class="headline">{{ task.title }}</v-list-item-title>
+        <v-list-item-subtitle>{{ task.startTime + " - " + task.endTime }}</v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
   </v-card>
@@ -21,9 +21,12 @@
 export default {
   name: 'todaytask',
   props: {
-    category:String,
-    title: String,
-    time: String,
+    task: {
+      category:String,
+      title: String,
+      startTime: String,
+      endTime: String,
+    }
   },
 
 }
