@@ -2,7 +2,7 @@
   <div id="myTodayPage">
     <table width="80%">
       <tr>
-        <td rowspan="2" bgcolor="skyblue" height="500">
+        <td rowspan="2" height="500">
           <vTaskList />
         </td>
         <td bgcolor="skyblue">
@@ -10,7 +10,7 @@
         </td>
       </tr>
       <tr>
-        <td bgcolor="skyblue">
+        <td>
           <vDiary />
         </td>
       </tr>
