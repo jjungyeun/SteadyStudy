@@ -35,13 +35,12 @@
 
 <script>
 import cAddTask from '../components/AddTask'
-import cTaskDetail from '../components/TaskDetail'
 import cTodayTask from '../components/TodayTask'
 
 export default {
   name: 'tasklist',
   components:{
-    cAddTask,cTaskDetail,cTodayTask
+    cAddTask,cTodayTask
   },
   props: {
   },
