@@ -4,6 +4,12 @@ var path = require('path');
 const bodyParser = require('body-parser');
 const router = express.Router();
 
+// mysql 연동
+var mysql_db = require('./db_connection.js')();
+var connect = mysql_db.init();
+mysql_db.test_open(connect);
+exports.connection = connect;
+
 var app = express();
 
 app.set('port', process.env.PORT || 3000);
@@ -21,27 +27,26 @@ const taskRouter = require('./router/task');
 const diaryRouter = require('./router/diary');
 
 //Route 정의
-//app.use('/', indexRouter);
 app.use('/register', registerRouter);
 app.use('/profile', profileRouter);
 app.use('/task',taskRouter);
 app.use('/diary', diaryRouter);
 
-// // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   next(createError(404));
-// });
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
 
-// // error handler
-// app.use(function(err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
