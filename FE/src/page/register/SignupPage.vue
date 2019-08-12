@@ -7,8 +7,9 @@
         <td class="signup_td_colname" >
           <p>* ID</p>
         </td>
-        <td class="signup_td_detail">
+        <td>
           <v-text-field
+              class="signup_td_detail"
               :value="userID"
               readonly
             ></v-text-field>
@@ -18,9 +19,10 @@
         <td class="signup_td_colname" >
           <p>* 닉네임</p>
         </td>
-        <td class="signup_td_detail">
+        <td>
           <v-form
-            lazy-validation
+            lazy-validation 
+            class="signup_td_detail"
             v-model="valid.nickName">
             <v-text-field
               v-model="userNickName"
@@ -28,6 +30,7 @@
               :counter="12"
               required
             ></v-text-field>
+          <v-btn @click="checkNickName()">중복확인</v-btn>
           </v-form>
         </td>
       </tr>
@@ -35,8 +38,9 @@
         <td class="signup_td_colname" >
           <p>* 생년월일</p>
         </td>
-        <td class="signup_td_detail">
+        <td>
           <v-form
+            class="signup_td_detail"
             lazy-validation
             v-model="valid.birthDay">
           <v-text-field
@@ -67,8 +71,9 @@
         <td class="signup_td_colname" >
           <p>* 공부분야</p>
         </td>
-        <td class="signup_td_detail">
+        <td>
           <v-select
+           class="signup_td_detail"
           v-model="userField"
           :items="fields"
           ></v-select>
@@ -78,8 +83,9 @@
         <td class="signup_td_colname" >
           <p>* 하루 종료시간</p>
         </td>
-        <td class="signup_td_detail">
+        <td>
           <v-form
+            class="signup_td_detail"
             lazy-validation
             v-model="valid.endTime">
             <v-text-field
@@ -98,8 +104,9 @@
         <td class="signup_td_colname" >
           <p>다짐 한마디</p>
         </td>
-        <td class="signup_td_detail">
+        <td>
           <v-form
+            class="signup_td_detail"
             lazy-validation
             v-model="valid.saying">
             <v-text-field
@@ -203,6 +210,14 @@ export default {
     }
   },
   methods:{
+    checkNickName(){
+      // 닉네임 중복 체크
+
+      this.alertMsg = "이미 존재하는 닉네임입니다.";
+      this.alertColor = "error"; this.alertTimeout = 5000;
+      this.alertType = "error";
+      this.alertVisible = true; 
+    },
     validateForm(){
 
       // 입력 형식 오류 체크
@@ -264,7 +279,7 @@ export default {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 30px;
-  width: 80%;
+  width: 70%;
 }
 
 .signup_td_colname {
@@ -273,7 +288,7 @@ export default {
 }
 
 .signup_td_detail {
+  width:500px;
   padding-left: 50px;
-  padding-right: 50px;
 }
 </style>
