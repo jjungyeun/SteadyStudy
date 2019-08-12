@@ -11,7 +11,7 @@
     <cTodayTask 
       class="todayTaskList"
       v-for="task in tasks"
-      :key="task.title"
+      :key="task.taskId"
       :task="task"
       @click.native="viewDetailDialog(task)"/>
 
@@ -49,6 +49,7 @@ export default {
       addTaskDialog:false,
       isAddMode: true,
       task2Detail: {
+          taskId:0,
           title: "",
           detail: "",
           category: "",
@@ -58,6 +59,7 @@ export default {
       },
       tasks:[
         {
+          taskId:1,
           category: "공부",
           title: "DB 공부",
           detail: "공부 시져시져",
@@ -66,6 +68,7 @@ export default {
           state:"완료"
         },
         {
+          taskId:2,
           category: "약속",
           title: "아웃백><",
           detail: "맛있겠당><",
@@ -91,6 +94,7 @@ export default {
     },
     viewDetailDialog(task){
       this.isAddMode = false;
+      this.task2Detail.taskId = task.taskId;
       this.task2Detail.title = task.title;
       this.task2Detail.detail = task.detail;
       this.task2Detail.category = task.category;
@@ -100,6 +104,7 @@ export default {
       this.addTaskDialog = true;
     },
     clearTask(){
+      this.task2Detail.taskId = 0;
       this.task2Detail.title = '';
       this.task2Detail.detail = '';
       this.task2Detail.category = '';

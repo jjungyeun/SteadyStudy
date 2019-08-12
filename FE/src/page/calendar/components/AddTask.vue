@@ -133,6 +133,10 @@ export default {
        default: false
       },
       task: {
+        taskId: {
+          type: Number,
+          default: 0
+        },
         title: {
           type: String,
           default: ''
@@ -240,6 +244,7 @@ export default {
       this.alertVisible = false;
     },
     clearAll(){
+      this.task.taskId = 0;
       this.task.title = '';
       this.task.detail = '';
       this.task.startTime = '12:00';
