@@ -4,6 +4,7 @@ var path = require('path');
 const bodyParser = require('body-parser');
 const router = express.Router();
 
+
 // mysql 연동
 var mysql_db = require('./db_connection.js')();
 var connect = mysql_db.init();
@@ -19,6 +20,21 @@ app.listen(app.get('port'), function () {
 });
 
 //-----------------------------------
+
+app.use((req, res, next) =>{
+  res.header("Access-Control-Allow-Origin", "*")
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+  res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type")
+  next()
+})
+
+// // view engine setup
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'pug');
+
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 //Router 정의
 const registerRouter = require('./router/register');

@@ -3,7 +3,7 @@
     <table id="homeTable">
       <tr height="200">
         <td colspan="3" bgcolor="skyblue">
-          <h3>오늘의 내가 내일의 나를 만든다.</h3>
+          <h3>{{ saying }}</h3>
         </td>
       </tr>
       <tr height="500">
@@ -26,19 +26,46 @@
 import vYesterday from './views/Yesterday'
 import vToday from './views/Today'
 import vTomorrow from './views/Tomorrow'
-import cTodayTask from './components/TodayTask'
-import cTmrTask from './components/TomorrowTask'
+
+const config = require('../../../server.config');
 
 export default {
   name: 'home',
   components: {
-    vYesterday, vToday, vTomorrow, cTodayTask, cTmrTask
+    vYesterday, vToday, vTomorrow
+  },
+  data(){
+    return {
+      saying: "",
+      userID: "wjyddd",
+    }
   },
   methods:{
     goMyTodayPage(){
           this.$router.push('/calendar/today');
       },
-  }
+    getSaying(){
+      this.$http.get(config.serverUrl()+'profile/get/'+this.userID+'/saying')
+        .then((result)=>{
+          var data = result.data[0].saying;
+          if(data == null){
+            this.saying = "오늘의 내가 내일의 나를 만든다.";
+          }
+          else
+            this.saying = data;
+
+          console.log("saying: "+this.saying);
+        })
+        .catch((err)=>{
+          console.log(err)
+          alert(err)
+        })
+    }
+    
+  },
+  created(){
+    this.getSaying();
+  },
 }
 </script>
 
