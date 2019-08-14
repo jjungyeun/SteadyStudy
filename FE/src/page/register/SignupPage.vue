@@ -326,7 +326,10 @@ export default {
     gotoLoginPage(){
       window.location.href = "http://localhost:8080/register/login";
     }
-  }
+  },
+  created(){
+    this.userID = this.$session.get('id');
+  },
 }
 </script>
 
