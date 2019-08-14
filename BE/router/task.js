@@ -19,8 +19,25 @@ router.get('/get/:id/:date/today',function(req, res){
 });
 
 // task 추가
+// req.body.(id, title, detail, startTime, endTime, category, state)
 router.post('/add', function(req, res){
-
+    var date = new Date();
+    var curDate = date.getFullYear() + '-' + (date.getMonth()+1) +'-'+date.getDate();
+    var startTime = curDate + ' ' + req.body.startTime;
+    var endTime = curDate + ' ' + req.body.endTime;
+    var sql = "INSERT into taskTBL (id, title, detail, wDate, startTime, endTime, category, state) "+
+        "values ('" + req.body.id + "','" + req.body.title + "','" + req.body.detail + "', '" + curDate + "', '" +
+        startTime+"','"+endTime+"','"+req.body.category+"','"+req.body.state+"');";
+    console.log(sql);
+    connection.query(sql, function(err, data, fields){
+        if(!err){
+            res.send("success");
+        }
+        else {
+            console.log('task 추가 실패: ', err);
+            res.send('error');
+        }
+    });
 });
 
 // task 수정
