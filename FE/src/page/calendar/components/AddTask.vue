@@ -121,6 +121,8 @@
 </template>
 
 <script>
+const config = require('../../../../server.config');
+
 export default {
   name: 'addTask',
   props: {
@@ -200,9 +202,33 @@ export default {
         // MyTodayPage(parent)의 addTaskDialog를 false로 변경
         if(!this.isEditMode){  // 추가
 
-          alert("일정이 추가되었습니다");
-          this.isEditMode = false;
-          this.viewDetail = false;
+          // req.body.(id, title, detail, startTime, endTime, category, state)
+          this.$http.post(config.serverUrl()+'task/add', {
+            id: "wjyddd",
+            title: this.task.title,
+            detail: this.task.detail,
+            startTime: this.task.startTime,
+            endTime: this.task.endTime,
+            category: this.task.category,
+            state: this.task.state
+          })
+            .then((result)=>{
+              var data = result.data;
+              console.log(data);
+              if(data == "success"){
+                alert("일정이 추가되었습니다");
+                this.isEditMode = false;
+                this.viewDetail = false;
+              }
+              else if(data=="error"){
+                alert("추가 실패");
+              }
+            })
+            .catch((err)=>{
+              console.log(err)
+              alert(err)
+            })
+
         }
         else {  // 수정
 
@@ -224,6 +250,7 @@ export default {
       if(!this.isEditMode){
         this.isEditMode = true;
         this.viewDetail = false;
+        this.$emit('toEditMode');
       }
       else {
         this.addTask();
