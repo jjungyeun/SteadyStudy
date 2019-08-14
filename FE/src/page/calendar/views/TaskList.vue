@@ -26,6 +26,7 @@
       :isEditMode="isEditMode"
       :task="task2Detail"
       @toEditMode="changeToEditMode"
+      @reloadList="loadTasks"
       @close="closeDialog" />
     </v-dialog>
 
@@ -36,6 +37,8 @@
 <script>
 import cAddTask from '../components/AddTask'
 import cTodayTask from '../components/TodayTask'
+const config = require('../../../../server.config');	// view
+
 
 export default {
   name: 'tasklist',
@@ -59,26 +62,7 @@ export default {
           endTime: '13:00',
           state:"예정"
       },
-      tasks:[
-        {
-          taskId:1,
-          category: "공부",
-          title: "DB 공부",
-          detail: "공부 시져시져",
-          startTime: '10:00',
-          endTime: '11:00',
-          state:"완료"
-        },
-        {
-          taskId:2,
-          category: "약속",
-          title: "아웃백><",
-          detail: "맛있겠당><",
-          startTime: '12:00',
-          endTime: '17:00',
-          state:"예정"
-        },
-      ]
+      tasks:[]
     }
   },
   methods:{
@@ -107,7 +91,7 @@ export default {
       this.isAddMode = false;
       this.isEditMode = false;
       this.canClickOutside = true;
-      this.task2Detail.taskId = task.taskId;
+      this.task2Detail.taskId = task.num;
       this.task2Detail.title = task.title;
       this.task2Detail.detail = task.detail;
       this.task2Detail.category = task.category;
@@ -124,8 +108,26 @@ export default {
       this.task2Detail.startTime = '12:00';
       this.task2Detail.endTime = '13:00';
       this.task2Detail.state = '예정';
-
+    },
+    loadTasks(){
+      this.tasks = [];
+      var date = new Date();
+      var today = date.getFullYear() + '-' + (date.getMonth()+1) +'-'+date.getDate();
+      this.$http.get(config.serverUrl()+'task/get/'+this.$session.get('id')+'/'+today+'/today')
+            .then((result)=>{
+              var data = result.data;
+              for(var d of data){
+                this.tasks.push(d);
+              }
+            })
+            .catch((err)=>{
+              console.log(err)
+              alert(err)
+            });
     }
+  },
+  created(){
+    this.loadTasks();
   }
 }
 </script>

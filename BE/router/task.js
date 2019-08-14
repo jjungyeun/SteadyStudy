@@ -15,7 +15,16 @@ router.get('/get/:id/:date/tomorrow',function(req, res){
 
 // 오늘 task 불러오기
 router.get('/get/:id/:date/today',function(req, res){
-
+    connection.query('SELECT * from taskTBL where id = "'+req.params.id+'" and wdate = "'+req.params.date+'" ORDER BY starttime',
+    function(err, data){
+        if(!err){
+            res.send(data);
+        }
+        else {
+            console.log('오늘의 task 불러오기 실패: ', err);
+            res.send('error');
+        }
+    });
 });
 
 // task 추가
@@ -25,8 +34,8 @@ router.post('/add', function(req, res){
     if(req.body.date == 1)
         date.setDate(date.getDate() + 1);
     var curDate = date.getFullYear() + '-' + (date.getMonth()+1) +'-'+date.getDate();
-    var startTime = curDate + ' ' + req.body.startTime;
-    var endTime = curDate + ' ' + req.body.endTime;
+    var startTime = req.body.startTime;
+    var endTime = req.body.endTime;
     var sql = "INSERT into taskTBL (id, title, detail, wDate, startTime, endTime, category, state) "+
         "values ('" + req.body.id + "','" + req.body.title + "','" + req.body.detail + "', '" + curDate + "', '" +
         startTime+"','"+endTime+"','"+req.body.category+"','"+req.body.state+"');";
@@ -49,6 +58,15 @@ router.post('/edit',function(req, res){
 
 // task 삭제
 router.get('/delete/:taskid',function(req, res){
+    connection.query('DELETE from taskTbl where num = '+req.params.taskid+';', function(err, data){
+        if(!err){
+            res.send('success');
+        }
+        else {
+            console.log('task 삭제 실패: ', err);
+            res.send('error');
+        }
+    })
 
 });
 

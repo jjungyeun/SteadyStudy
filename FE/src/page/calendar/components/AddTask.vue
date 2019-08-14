@@ -220,6 +220,7 @@ export default {
                 alert("일정이 추가되었습니다");
                 this.isEditMode = false;
                 this.viewDetail = false;
+                this.$emit('reloadList');
               }
               else if(data=="error"){
                 alert("추가 실패");
@@ -258,7 +259,23 @@ export default {
       }
     },
     deleteTask(){
+      this.$http.get(config.serverUrl()+'task/delete/'+this.task.taskId)
+            .then((result)=>{
+              var data = result.data;
+              console.log(data);
+              if(data == 'success')
+                alert('삭제하였습니다.');
+              else 
+                alert('실패하였습니다.');
+              this.$emit('reloadList');
+            })
+            .catch((err)=>{
+              console.log(err)
+              alert(err)
+            });
+      this.$emit('close');
       this.turnOffAlarm();
+
     },
     showDltAlarm(){
       this.alertTime = 0;
