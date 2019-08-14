@@ -17,13 +17,13 @@
 
     <v-dialog
       v-model="addTaskDialog"
-      :persistent="isAddMode"
-      @click:outside="closeDialog"
+      :persistent="!canClickOutside"
+      @click:outside="clickOutside"
       width="500"
     >
     <cAddTask 
-      :viewDetail="!isAddMode"
-      :isEditMode="false"
+      :viewDetail="!isAddMode&&!isEditMode"
+      :isEditMode="isEditMode"
       :task="task2Detail"
       @toEditMode="changeToEditMode"
       @close="closeDialog" />
@@ -48,8 +48,10 @@ export default {
     return {
       addTaskDialog:false,
       isAddMode: true,
+      isEditMode: false,
+      canClickOutside: false,
       task2Detail: {
-          taskId:0,
+          taskId: 0,
           title: "",
           detail: "",
           category: "",
@@ -82,18 +84,29 @@ export default {
   methods:{
     showAddTaskDialog(){
       this.isAddMode = true;
+      this.isEditMode = false;
+      this.canClickOutside = false;
       this.clearTask();
       this.addTaskDialog = true;
     },
     changeToEditMode(){
       this.isAddMode = false;
+      this.isEditMode = true;
+      this.canClickOutside = false;
+    },
+    clickOutside(){
+      if(this.canClickOutside)
+        this.closeDialog();
     },
     closeDialog(){
+      this.isEditMode = false;
       this.addTaskDialog = false;
       this.clearTask();
     },
     viewDetailDialog(task){
       this.isAddMode = false;
+      this.isEditMode = false;
+      this.canClickOutside = true;
       this.task2Detail.taskId = task.taskId;
       this.task2Detail.title = task.title;
       this.task2Detail.detail = task.detail;
