@@ -1,16 +1,18 @@
 <template>
   <div id="myTodayPage">
-    <table width="80%">
-      <tr>
-        <td rowspan="2" height="500">
+    <table style="
+        border-spacing: 50px;
+        border-collapse: separate;">
+      <tr style="margin-right">
+        <td rowspan="2" style="width:500px;">
           <vTaskList />
         </td>
-        <td bgcolor="skyblue">
+        <td style="width:500px;">
           <vStopWatch />
         </td>
       </tr>
       <tr>
-        <td>
+        <td style="width:500px;">
           <vDiary />
         </td>
       </tr>
@@ -39,5 +41,7 @@ export default {
 
 <style>
 #myTodayPage {
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

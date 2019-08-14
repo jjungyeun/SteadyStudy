@@ -1,7 +1,6 @@
 <template>
-  <div style="margin:10px;">
+  <div style="margin-top:20px;width:80%;">
   <v-card
-    max-width="400px"
     color="#50bcdf"
     dark
     outlined

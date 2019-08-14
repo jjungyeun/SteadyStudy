@@ -16,14 +16,14 @@
       :solo="!isEditMode"
       :flat="!isEditMode"
       :disabled="!isEditMode"
-      style="display:inline-block;width:150px;"
+      style="display:inline-block;width:100%;"
       v-model="diary.state"
       :counter="5"
     ></v-text-field>"
 
     <v-textarea
       v-model="diary.detail"
-      style="width:500px;"
+      style="width:100%;"
       :solo="isEditMode"
       :flat="!isEditMode"
       :disabled="!isEditMode"
