@@ -202,9 +202,10 @@ export default {
         // MyTodayPage(parent)의 addTaskDialog를 false로 변경
         if(!this.isEditMode){  // 추가
 
-          // req.body.(id, title, detail, startTime, endTime, category, state)
+          // req.body.(date, id, title, detail, startTime, endTime, category, state)
           this.$http.post(config.serverUrl()+'task/add', {
-            id: "wjyddd",
+            date: this.todayORtmr,
+            id: this.$session.get('id'),
             title: this.task.title,
             detail: this.task.detail,
             startTime: this.task.startTime,

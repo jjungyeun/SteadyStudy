@@ -19,9 +19,11 @@ router.get('/get/:id/:date/today',function(req, res){
 });
 
 // task 추가
-// req.body.(id, title, detail, startTime, endTime, category, state)
+// req.body.(date, id, title, detail, startTime, endTime, category, state)
 router.post('/add', function(req, res){
     var date = new Date();
+    if(req.body.date == 1)
+        date.setDate(date.getDate() + 1);
     var curDate = date.getFullYear() + '-' + (date.getMonth()+1) +'-'+date.getDate();
     var startTime = curDate + ' ' + req.body.startTime;
     var endTime = curDate + ' ' + req.body.endTime;
