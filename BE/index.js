@@ -28,13 +28,13 @@ app.use((req, res, next) =>{
   next()
 })
 
-// // view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'pug');
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 //Router 정의
 const registerRouter = require('./router/register');
