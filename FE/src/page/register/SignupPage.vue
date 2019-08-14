@@ -161,6 +161,7 @@
 
 <script>
 import { mask } from 'vue-the-mask'
+const config = require('../../../server.config');
 
 export default {
   name: 'signup',
@@ -174,6 +175,7 @@ export default {
       alertVisible: false, alertTimeout:0,
       alertMsg:'', alertColor:'error', alertType: 'error',
       today: new Date(),
+      duplicateNick: 0,
       valid: {
         'nickName':false,
         'birthDay':false,
@@ -209,14 +211,37 @@ export default {
 
     }
   },
+  watch: {
+    userNickName: function (val) {
+      this.duplicateNick = 0;
+    }
+  },
   methods:{
     checkNickName(){
       // 닉네임 중복 체크
-
-      this.alertMsg = "이미 존재하는 닉네임입니다.";
-      this.alertColor = "error"; this.alertTimeout = 5000;
-      this.alertType = "error";
-      this.alertVisible = true; 
+      this.$http.get(config.serverUrl()+'register/check/nickname/'+this.userNickName)
+            .then((result)=>{
+              var data = result.data;
+              console.log(data);
+              if(data == "pass"){
+                this.alertMsg = "사용가능한 닉네임입니다.";
+                this.alertColor = "success"; this.alertTimeout = 4000;
+                this.alertType = "success";
+                this.alertVisible = true; 
+                this.duplicateNick = 1;
+              }
+              else if(data == "fail"){
+                this.alertMsg = "이미 존재하는 닉네임입니다.";
+                this.alertColor = "error"; this.alertTimeout = 5000;
+                this.alertType = "error";
+                this.alertVisible = true; 
+                this.duplicateNick = -1;
+              }
+            })
+            .catch((err)=>{
+              console.log(err)
+              alert(err)
+            });
     },
     validateForm(){
 
@@ -242,16 +267,50 @@ export default {
         this.alertVisible = true; 
         return false;
       }
+      else if(this.duplicateNick == 0){
+        this.alertMsg = "닉네임 중복검사를 해주세요.";
+        this.alertColor = "error"; this.alertTimeout = 5000;
+        this.alertType = "error";
+        this.alertVisible = true; 
+        return false;
+      }
+      else if(this.duplicateNick == -1){
+        this.alertMsg = "사용할 수 없는 닉네임입니다.";
+        this.alertColor = "error"; this.alertTimeout = 5000;
+        this.alertType = "error";
+        this.alertVisible = true; 
+        return false;
+      }
       else 
         return true;
     },
     submit(){
       var checkVali = this.validateForm();
       if(checkVali){
-        // 서버로 올리고 /register/login으로 redirects
-        // then 써서 가입완료 alert 띄우기
-        alert("가입이 완료되었습니다.");
-        window.location.href = "http://localhost:8080/register/login"
+        this.$http.post(config.serverUrl()+'register/signup', {
+            id: this.userID,
+            nickname: this.userNickName,
+            birthday: this.userBirthday,
+            gender: this.userGender,
+            field: this.userField,
+            changedaytime: this.userChangeDayTime,
+            saying: this.userSaying
+          })
+            .then((result)=>{
+              var data = result.data;
+              console.log(data);
+              if(data == "success"){
+                alert("가입이 완료되었습니다.");
+                this.gotoLoginPage();
+              }
+              else {
+                alert("회원가입 실패: "+ data.sqlMessage);
+              }
+            })
+            .catch((err)=>{
+              console.log(err)
+              alert(err)
+            });
       }
     },
     clickCancel(){
@@ -262,7 +321,10 @@ export default {
     },
     cancel(){
       this.alertVisible = false; 
-      window.location.href = "http://localhost:8080/register/login"
+      this.gotoLoginPage();
+    },
+    gotoLoginPage(){
+      window.location.href = "http://localhost:8080/register/login";
     }
   }
 }
