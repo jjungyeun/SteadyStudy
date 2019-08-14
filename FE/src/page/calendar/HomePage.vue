@@ -37,7 +37,7 @@ export default {
   data(){
     return {
       saying: "",
-      userID: "wjyddd",
+      userID: "",
     }
   },
   methods:{
@@ -45,6 +45,7 @@ export default {
           this.$router.push('/calendar/today');
       },
     getSaying(){
+      this.userID = this.$session.get('id');
       this.$http.get(config.serverUrl()+'profile/get/'+this.userID+'/saying')
         .then((result)=>{
           var data = result.data[0].saying;
@@ -59,7 +60,7 @@ export default {
         .catch((err)=>{
           console.log(err)
           alert(err)
-        })
+        });
     }
     
   },
