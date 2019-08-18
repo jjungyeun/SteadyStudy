@@ -3,18 +3,8 @@ var router = express.Router();
 
 var connection = require('../index.js').connection;
 
-// 어제 task 불러오기
-router.get('/get/:id/:date/yesterday',function(req, res){
-
-});
-
-// 내일 task 불러오기
-router.get('/get/:id/:date/tomorrow',function(req, res){
-
-});
-
-// 오늘 task 불러오기
-router.get('/get/:id/:date/today',function(req, res){
+// task 불러오기
+router.get('/get/:id/:date',function(req, res){
     connection.query('SELECT * from taskTBL where id = "'+req.params.id+'" and wdate = "'+req.params.date+'" ORDER BY starttime',
     function(err, data){
         if(!err){
@@ -52,8 +42,22 @@ router.post('/add', function(req, res){
 });
 
 // task 수정
+// req.body.(title, detail, startTime, endTime, category, state, taskid)
 router.post('/edit',function(req, res){
-
+    var sql = 'UPDATE taskTbl SET title = "'+ req.body.title + '", detail = "'+ req.body.detail + 
+        '", startTime = "'+ req.body.startTime + '", endTime = "'+ req.body.endTime + 
+        '", category = "'+ req.body.category + '", state = "'+ req.body.state + 
+        '" WHERE num = '+ req.body.taskid  + ' LIMIT 1;';
+        console.log(sql);
+        connection.query(sql, function(err, data){
+            if(!err){
+                res.send('success');
+            }
+            else {
+                console.log('task 수정 실패: ', err);
+                res.send('error');
+            }
+        });
 });
 
 // task 삭제

@@ -113,7 +113,7 @@ export default {
       this.tasks = [];
       var date = new Date();
       var today = date.getFullYear() + '-' + (date.getMonth()+1) +'-'+date.getDate();
-      this.$http.get(config.serverUrl()+'task/get/'+this.$session.get('id')+'/'+today+'/today')
+      this.$http.get(config.serverUrl()+'task/get/'+this.$session.get('id')+'/'+today)
             .then((result)=>{
               var data = result.data;
               for(var d of data){

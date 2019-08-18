@@ -229,10 +229,37 @@ export default {
             .catch((err)=>{
               console.log(err)
               alert(err)
-            })
+            });
 
         }
         else {  // 수정
+          // req.body.(title, detail, startTime, endTime, category, state, )
+          this.$http.post(config.serverUrl()+'task/edit', {
+            title: this.task.title,
+            detail: this.task.detail,
+            startTime: this.task.startTime,
+            endTime: this.task.endTime,
+            category: this.task.category,
+            state: this.task.state,
+            taskid: this.task.taskId
+          })
+            .then((result)=>{
+              var data = result.data;
+              console.log(data);
+              if(data == "success"){
+                alert("수정되었습니다");
+                this.isEditMode = false;
+                this.viewDetail = false;
+                this.$emit('reloadList');
+              }
+              else if(data=="error"){
+                alert("수정 실패");
+              }
+            })
+            .catch((err)=>{
+              console.log(err)
+              alert(err)
+            })
 
           this.isEditMode = false;
           this.viewDetail = false;
