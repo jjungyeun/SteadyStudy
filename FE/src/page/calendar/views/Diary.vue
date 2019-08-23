@@ -34,16 +34,20 @@
 </template>
 
 <script>
+const config = require('../../../../server.config');
+
 export default {
   name: 'diary',
   props: {
   },
   data(){
     return {
+      today: "",
       isEditMode: false,
+      editType: "",
       diary: {
-        state: "넘무별로얌",
-        detail: "공부 너무 하기시로~~~"
+        state: "",
+        detail: ""
       }
     }
   },
@@ -51,9 +55,54 @@ export default {
     changeEditMode(){
       if(this.isEditMode == true){
         // 내용 및 상태 update 쿼리 날리기
+        this.$http.post(config.serverUrl()+'diary/edit', {
+            id: this.$session.get('id'),
+            date: this.today,
+            detail: this.diary.detail,
+            state: this.diary.state,
+            type: this.editType
+          })
+            .then((result)=>{
+              var data = result.data;
+              console.log(data);
+              if(data == 'update')
+                alert('수정되었습니다');
+                this.editType = "update";
+            })
+            .catch((err)=>{
+              console.log(err)
+              alert(err)
+            });
+
       }
       this.isEditMode = !this.isEditMode;
     }
+  },
+  created(){
+    var d = new Date();
+    this.today = d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+    this.$http.get(config.serverUrl()+'diary/get/'+this.$session.get('id')+'/'+this.today)
+            .then((result)=>{
+              var data = result.data;
+              console.log(data);
+
+              if(data == "empty"){
+                this.diary.state = "";
+                this.diary.detail = "";
+                this.editType = "new";
+              }
+              else {
+                this.diary.state = data[0].state;
+                this.diary.detail = data[0].detail;
+                this.editType = "update";
+              }
+
+            })
+            .catch((err)=>{
+              console.log(err)
+              alert(err)
+            });
+
   }
 }
 </script>
