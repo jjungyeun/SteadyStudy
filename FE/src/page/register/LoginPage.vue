@@ -14,6 +14,7 @@ export default {
   name: 'login',
   data(){
     return {
+      userNickName:""
     }
   },
   methods:{
@@ -25,6 +26,7 @@ export default {
     goHomePage(){
       this.$session.start();
       this.$session.set('id', this.email);
+      this.$session.set('nickname',this.userNickName);
       this.$emit('check');
       this.$router.push('/calendar');
     },
@@ -38,7 +40,8 @@ export default {
                 this.goSignupPage();
               }
               else{
-                alert(data[0].nickname+"님 환영합니다");
+                alert(data[0].nickName+"님 환영합니다");
+                this.userNickName = data[0].nickName;
                 this.$emit('checkSession');
                 this.goHomePage();
               }

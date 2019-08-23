@@ -324,6 +324,7 @@ export default {
       this.gotoLoginPage();
     },
     gotoLoginPage(){
+      this.$session.destroy();
       window.location.href = "http://localhost:8080/register/login";
     }
   },
