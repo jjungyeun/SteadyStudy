@@ -29,7 +29,10 @@ export default {
   },
   methods:{
     checkSession(){
-
+      if(this.$session.exists()){ // 세션 존재
+        this.userID = this.$session.get('id');
+        this.logoutVisible = true;  
+      }
     },
     logout(){
       this.userID = '';

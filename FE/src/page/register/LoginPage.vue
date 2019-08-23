@@ -38,7 +38,8 @@ export default {
                 this.goSignupPage();
               }
               else{
-                alert(data.nickname+"님 환영합니다");
+                alert(data[0].nickname+"님 환영합니다");
+                this.$emit('checkSession');
                 this.goHomePage();
               }
             })
