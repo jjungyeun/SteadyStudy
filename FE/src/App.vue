@@ -1,36 +1,37 @@
 <template>
   <v-app>
-    <h3>{{userID}}</h3>
-    <v-btn 
-      @click="logout"
+    <Toolbar 
       v-if="logoutVisible"
-      >logout</v-btn>
+      :id="userNickname"
+      @logout="logout"
+      />
     <router-view
       @check="checkSession" />
   </v-app>
 </template>
 
 <script>
+import Toolbar from './page/Toolbar'
 export default {
   name: 'App',
   components: {
+    Toolbar
   },
   data(){
     return {
       userID: "",
+      userNickname: "",
       logoutVisible: false
     }
   },
   created(){
-    if(this.$session.exists()){
-      this.userID = this.$session.get('id');
-      this.logoutVisible = true;
-    }
+    this.checkSession();
   },
   methods:{
     checkSession(){
       if(this.$session.exists()){ // 세션 존재
         this.userID = this.$session.get('id');
+        this.userNickname = this.$session.get('nickname');
         this.logoutVisible = true;  
       }
     },
