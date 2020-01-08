@@ -11,7 +11,7 @@ router.get('/get/:id/:date',function(req, res){
             res.send(data);
         }
         else {
-            console.log('오늘의 task 불러오기 실패: ', err);
+            console.log('task 불러오기 실패: ', err);
             res.send('error');
         }
     });
