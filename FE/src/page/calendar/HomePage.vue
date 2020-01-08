@@ -7,13 +7,13 @@
         </td>
       </tr>
       <tr height="500">
-        <td bgcolor="yellow">
+        <td class="home-side">
           <vYesterday />
         </td>
         <td bgcolor="yellow" v-on:click="goMyTodayPage">
           <vToday />
         </td>
-        <td bgcolor="yellow">
+        <td bgcolor="yellow" class="home-side">
           <vTomorrow />
         </td>
       </tr>
@@ -74,5 +74,9 @@ export default {
 #homeTable {
   width: 100%;
   text-align: center;
+}
+
+.home-side {
+  width: 30%;
 }
 </style>
