@@ -10,8 +10,8 @@
 
     <br>
     
-    오늘은 "
-    <v-text-field
+    오늘은 
+    "<v-text-field
       :outlined="isEditMode"
       :solo="!isEditMode"
       :flat="!isEditMode"

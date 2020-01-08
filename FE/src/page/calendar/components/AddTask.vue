@@ -173,14 +173,26 @@ export default {
       alertVisible: false, alertMsg:'', alertTime:5000,
       deleteAlert: false,
       valid: true,
+      timeCheck: true,
       taskCategories: ['공부','약속'],
       titleRules: [
           v => !!v || '제목을 입력해주세요',
           v => v.length <= 20 || '20자 이내로 입력해주세요',
       ],
       endTimeRules: [
-        v => v >= this.task.startTime || '시작시간보다 이릅니다'
+        v => v > this.task.startTime || '시작시간보다 이릅니다'
       ]
+    }
+  },
+  watch: {
+    task: {
+      deep: true,
+      handler(){
+      if(this.task.startTime > this.task.endTime)
+        this.timeCheck = false;
+      else
+        this.timeCheck = true;
+      }
     }
   },
   methods:{
@@ -191,6 +203,10 @@ export default {
       }
       else if(this.task.category==''){
         this.alertMsg = "카테고리를 설정해주세요";
+        this.alertVisible = true;
+      }
+      else if(!this.timeCheck){
+        this.alertMsg = "종료시간이 시작시간보다 이릅니다";
         this.alertVisible = true;
       }
       else if(!this.valid){
